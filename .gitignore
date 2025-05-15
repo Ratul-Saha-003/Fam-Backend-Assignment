@@ -1,0 +1,12 @@
+# Cache
+__pycache__/
+
+# Environment
+.env
+
+# SQLite database
+*.db
+yt.db
+
+# Virtual environment
+.venv/
