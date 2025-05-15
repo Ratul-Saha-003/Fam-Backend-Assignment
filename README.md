@@ -36,10 +36,16 @@ A simple dashboard (via `index.html`) allows you to view and search videos by ke
 ```bash
 git clone https://github.com/Ratul-Saha-003/Fam-Backend-Assignment.git
 cd into the project
+```
+
+### 2. Activate virtual environment
+```bash
+python3 -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 2. Setup the env
+### 3. Setup the env variables(`.env`)
 ```bash
 INTERVAL= <interval-in-which-youtube-API-is-fetched>
 DATABASE_USERNAME=<db-username>
@@ -50,12 +56,12 @@ SEARCH_QUERY = <search-query>
 SEARCH_URL = 'https://www.googleapis.com/youtube/v3/search'
 ```
 
-### 3. Start the MySQL Database with Docker
+### 4. Start the MySQL Database with Docker
 ```bash
 docker compose up -d
 ```
 
-### 4. Run the server
+### 5. Run the server
 ```bash
 python app.py
 ```
