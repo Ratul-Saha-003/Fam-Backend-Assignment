@@ -27,9 +27,7 @@ def background_fetch():
         session = SessionLocal()
         try:
             videos = fetch_latest_videos(session)
-            print(videos)
             save_videos_to_db(session, videos)
-            print("Done")
         finally:
             session.close()
         time.sleep(INTERVAL)

@@ -9,7 +9,7 @@ A simple dashboard (via `index.html`) allows you to view and search videos by ke
 ## Features Implemented
 
 ### Basic Requirements
-- **Periodic YouTube Data Fetching:** The server runs a background thread that calls the YouTube API every 10 seconds using the most recently validated API key. It stores new videos in the SQLite DB.
+- **Periodic YouTube Data Fetching:** The server runs a background thread that calls the YouTube API every 10 minutes(can be changed) using the most recently validated API key. It stores new videos in the SQLite DB.
 - **Video Storage:** It saves the title, description, published date, thumbnail URL, and channel title with proper indexing.
 - **Paginated GET API:** An endpoint `/videos` returns the stored video list sorted by published datetime in descending order.
 
@@ -27,6 +27,7 @@ A simple dashboard (via `index.html`) allows you to view and search videos by ke
 - **Dashboard (Optional UI):** A lightweight HTML page (`index.html`) lets you search and view stored videos using a keyword search and default load.
 
 ![Dashboard](https://drive.google.com/uc?export=view&id=1O5D7B2-ZHR-18RjdrCR1Euw-02Srv_ed)
+
 ---
 
 ## How to Run
@@ -40,9 +41,9 @@ pip install -r requirements.txt
 
 ### 2. Setup the env
 ```bash
-INTERVAL= <interval in which youtube API is fetched>
-DATABASE_URI= <url of sqlite db>
-SEARCH_QUERY = <search query>
+INTERVAL= <interval-in-which-youtube-API-is-fetched>
+DATABASE_URI= <url-of-sqlite-db>
+SEARCH_QUERY = <search-query>
 SEARCH_URL = 'https://www.googleapis.com/youtube/v3/search'
 ```
 
@@ -54,16 +55,20 @@ python app.py
 ## API Endpoints
 
 ### 1. Add a New API Key
+```bash
 POST /api-keys
 Content-Type: application/json
 Body: 
 {
   "key": "API_KEY_HERE"
 }
+```
 
 ![API response](https://drive.google.com/uc?export=view&id=1FHisdl6fwx5BoejMZpAx0yM4MrcQpvWL)
 
 ### 2. Fetch paginated videos
+```bash
 GET /videos?page=1&per_page=10
+```
 
 ![API response](https://drive.google.com/uc?export=view&id=1yRl07inHIl-y3HcOg-zNbWMMF_aLj5FF)

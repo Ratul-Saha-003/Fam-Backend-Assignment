@@ -17,6 +17,12 @@ VIDEO_FIELDS = ['snippet']
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+def get_latest_published_time(session: Session):
+    '''
+    Returns the published time of the latest video in the database
+    '''
+    latest_video = session.query(Video).order_by(Video.published_at.desc()).first()
+    return latest_video.published_at.isoformat("T") + "Z" if latest_video else None
 
 def fetch_latest_videos(session: Session):
     '''
@@ -24,7 +30,8 @@ def fetch_latest_videos(session: Session):
     Queries the APIKeys thereby updating their validation.
     '''
     api_keys = session.query(APIKey).filter_by(validated=True).all()
-    published_after = (datetime.utcnow() - timedelta(days=30)).isoformat("T") + "Z"
+    # published_after the latest video in the database to avoid duplicates
+    published_after = get_latest_published_time(session)
     # Check all the keys
     for key_entry in api_keys:
         params = {
@@ -32,17 +39,20 @@ def fetch_latest_videos(session: Session):
             'q': SEARCH_QUERY,
             'type': 'video',
             'order': 'date',
-            'maxResults': 1,
-            'key': key_entry.key,
-            'publishedAfter': published_after
+            'maxResults': 50,
+            'key': key_entry.key
         }
+        # Only add publishedAfter if it exists
+        if published_after:
+            params['publishedAfter'] = published_after
+
         response = requests.get(SEARCH_URL, params=params)
         if response.status_code == 200:
             # If a key is valid, the response is returned and the loop breaks
             logger.info(f"Fetched videos using API key: {key_entry.key}")
             return response.json().get('items', [])
         elif response.status_code == 403:
-            # If a key isn't valid, the validated field is set to False in the database
+            # If a key isn't valid, the validated field of the API key is set to False in the database
             logger.warning(f"Quota exceeded or forbidden for API key: {key_entry.key}, marking as invalid.")
             key_entry.validated = False
             session.commit()
@@ -58,10 +68,10 @@ def save_videos_to_db(session: Session, videos_data):
         video_id = item['id']['videoId']
         snippet = item['snippet']
 
-        # Check for duplicates
-        if session.query(Video).filter_by(id=video_id).first():
-            logger.info(f"Video already exists in DB: {video_id}")
-            continue 
+        # # Check for duplicates
+        # if session.query(Video).filter_by(id=video_id).first():
+        #     logger.info(f"Video already exists in DB: {video_id}")
+        #     continue 
 
         # New Video entry
         video = Video(
@@ -121,7 +131,7 @@ def get_all_videos(session: Session):
 
 def get_videos_by_title(session, search_string):
     """
-    Returns all videos whose titles partially match the given search string (case-insensitive).
+    Returns all videos whose titles partially match the given search string(case-insensitive).
     """
     search_pattern = f"%{search_string}%"
     # Querying the database according to the search pattern
