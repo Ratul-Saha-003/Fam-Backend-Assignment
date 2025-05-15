@@ -8,12 +8,12 @@ class Video(Base):
     __tablename__ = 'videos'
 
     # Required columns for Video model
-    id = Column(String, primary_key=True)
-    title = Column(String)
-    description = Column(String)
+    id = Column(String(255), primary_key=True)
+    title = Column(String(255))
+    description = Column(String(1024))
     published_at = Column(DateTime)
-    thumbnail_url = Column(String)
-    channel_title = Column(String)
+    thumbnail_url = Column(String(1024))
+    channel_title = Column(String(255))
     
     def __repr__(self):
         return f"<Video(id={self.id}, title={self.title})>"
@@ -24,5 +24,5 @@ class APIKey(Base):
     __tablename__ = 'api_keys'
 
     # Required columns for APIKey model
-    key = Column(String, primary_key=True)
+    key = Column(String(255), primary_key=True)
     validated = Column(Boolean, default=True)

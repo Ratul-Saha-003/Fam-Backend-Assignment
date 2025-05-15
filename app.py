@@ -1,12 +1,12 @@
+import os
+import threading
+import time
 from flask import Flask, request, jsonify, render_template
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Base, APIKey
+from models import Base
 from services import fetch_latest_videos, save_videos_to_db, get_paginated_videos, add_api_key, get_all_videos, get_videos_by_title
-import threading
-import time
 from dotenv import load_dotenv
-import os
 
 load_dotenv()
 
@@ -16,7 +16,7 @@ app = Flask(__name__)
 INTERVAL = int(os.getenv("INTERVAL"))
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-# Set up SQLite DB
+# Set up MySQL DB
 engine = create_engine(DATABASE_URL)
 Base.metadata.create_all(engine)
 SessionLocal = sessionmaker(bind=engine)

@@ -4,8 +4,9 @@ from models import Video, APIKey
 from sqlalchemy.orm import Session
 import logging
 from sqlalchemy import or_
-from datetime import datetime, timedelta
+from datetime import datetime
 import os
+from sqlalchemy.dialects.mysql import insert
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -68,22 +69,17 @@ def save_videos_to_db(session: Session, videos_data):
         video_id = item['id']['videoId']
         snippet = item['snippet']
 
-        # # Check for duplicates
-        # if session.query(Video).filter_by(id=video_id).first():
-        #     logger.info(f"Video already exists in DB: {video_id}")
-        #     continue 
-
-        # New Video entry
-        video = Video(
+        # New Video entry with ignoring duplicates
+        video = insert(Video).values(
             id=video_id,
             title=snippet['title'],
             description=snippet['description'],
             published_at=datetime.strptime(snippet['publishedAt'], '%Y-%m-%dT%H:%M:%SZ'),
             thumbnail_url=snippet['thumbnails']['high']['url'],
             channel_title=snippet['channelTitle']
-        )
-        session.add(video)
-        logger.info(f"Saved new video to DB: {video.title} ({video.id})")
+        ).prefix_with("IGNORE")
+        session.execute(video)
+        logger.info(f"Saved new video to DB: {video_id}")
     session.commit()
 
 def get_paginated_videos(session: Session, page: int, per_page: int):

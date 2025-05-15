@@ -1,6 +1,6 @@
 # YouTube Video Fetcher
 
-This project is a Flask-based server that continuously fetches the latest YouTube videos for a search query, stores them in a SQLite database, along with an API to retrieve the data in a paginated format.
+This project is a Flask-based server that continuously fetches the latest YouTube videos for a search query, stores them in a MySQL database, along with an API to retrieve the data in a paginated format.
 
 A simple dashboard (via `index.html`) allows you to view and search videos by keywords directly from the browser.
 
@@ -9,7 +9,7 @@ A simple dashboard (via `index.html`) allows you to view and search videos by ke
 ## Features Implemented
 
 ### Basic Requirements
-- **Periodic YouTube Data Fetching:** The server runs a background thread that calls the YouTube API every 10 minutes(can be changed) using the most recently validated API key. It stores new videos in the SQLite DB.
+- **Periodic YouTube Data Fetching:** The server runs a background thread that calls the YouTube API every 10 minutes(can be changed) using the most recently validated API key. It stores new videos in the MySQL DB.
 - **Video Storage:** It saves the title, description, published date, thumbnail URL, and channel title with proper indexing.
 - **Paginated GET API:** An endpoint `/videos` returns the stored video list sorted by published datetime in descending order.
 
@@ -42,12 +42,20 @@ pip install -r requirements.txt
 ### 2. Setup the env
 ```bash
 INTERVAL= <interval-in-which-youtube-API-is-fetched>
-DATABASE_URI= <url-of-sqlite-db>
+DATABASE_USERNAME=<db-username>
+DATABASE_PASSWORD=<db-password>
+DATABASE_NAME=<db-name>
+DATABASE_URL=mysql+pymysql://<db-username>:<db-password>@localhost:3306/<db-name>
 SEARCH_QUERY = <search-query>
 SEARCH_URL = 'https://www.googleapis.com/youtube/v3/search'
 ```
 
-### 3. Run the server
+### 3. Start the MySQL Database with Docker
+```bash
+docker compose up -d
+```
+
+### 4. Run the server
 ```bash
 python app.py
 ```
