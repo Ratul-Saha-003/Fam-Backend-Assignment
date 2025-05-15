@@ -63,7 +63,7 @@ def fetch_latest_videos(session: Session):
 
 def save_videos_to_db(session: Session, videos_data):
     '''
-        Stores videos into the SQLite database.
+        Stores videos into the MySQL database.
     '''
     for item in videos_data:
         video_id = item['id']['videoId']

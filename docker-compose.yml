@@ -1,6 +1,7 @@
 version: '3'
+# Using MySQL container as database
 services:
-  lyk-db:
+  youtube-db:
     container_name: youtube-db
     restart: unless-stopped
     image: mysql:8.0
