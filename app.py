@@ -13,7 +13,7 @@ load_dotenv()
 app = Flask(__name__)
 
 # env variables
-INTERVAL = os.getenv("INTERVAL")
+INTERVAL = int(os.getenv("INTERVAL"))
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 # Set up SQLite DB
