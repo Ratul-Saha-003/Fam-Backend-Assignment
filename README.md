@@ -66,6 +66,10 @@ docker compose up -d
 python app.py
 ```
 
+> **Note:**  
+> Before the background fetcher starts pulling videos and populating the database, kindly add at least one valid YouTube API key using the `/api-keys` POST endpoint discussed below.  
+> Without an API key, no video data will be fetched or stored.
+
 ## API Endpoints
 
 ### 1. Add a New API Key
