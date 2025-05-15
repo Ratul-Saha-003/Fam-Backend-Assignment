@@ -26,7 +26,7 @@ A simple dashboard (via `index.html`) allows you to view and search videos by ke
 - **API Key Management Endpoint:** Use `/api-keys` to add new API keys dynamically via a POST request.
 - **Dashboard (Optional UI):** A lightweight HTML page (`index.html`) lets you search and view stored videos using a keyword search and default load.
 
-![Dashboard](https://drive.google.com/file/d/1O5D7B2-ZHR-18RjdrCR1Euw-02Srv_ed/view?usp=sharing)
+![Dashboard](https://drive.google.com/uc?export=view&id=1O5D7B2-ZHR-18RjdrCR1Euw-02Srv_ed)
 ---
 
 ## How to Run
@@ -61,9 +61,9 @@ Body:
   "key": "API_KEY_HERE"
 }
 
-![API response](https://drive.google.com/file/d/1FHisdl6fwx5BoejMZpAx0yM4MrcQpvWL/view?usp=sharing)
+![API response](https://drive.google.com/uc?export=view&id=1FHisdl6fwx5BoejMZpAx0yM4MrcQpvWL)
 
 ### 2. Fetch paginated videos
 GET /videos?page=1&per_page=10
 
-![API response](https://drive.google.com/file/d/1yRl07inHIl-y3HcOg-zNbWMMF_aLj5FF/view?usp=sharing)
+![API response](https://drive.google.com/uc?export=view&id=1yRl07inHIl-y3HcOg-zNbWMMF_aLj5FF)
